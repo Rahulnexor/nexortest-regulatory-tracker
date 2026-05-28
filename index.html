@@ -79,6 +79,26 @@
   .reg-tracker .rt-class1 { color: #dc2626; font-weight: 700; font-size: 13px; }
   .reg-tracker .rt-early-alert { color: #f59e0b; font-weight: 700; font-size: 13px; }
 
+  /* NEW badge */
+  .reg-tracker .rt-badge-new { background: #10b981; margin-left: 6px; font-size: 10px; vertical-align: middle; animation: rt-new-pulse 2s ease-in-out infinite; }
+  @keyframes rt-new-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+  /* Stale/archived entries */
+  .reg-tracker tr.rt-stale td { opacity: 0.5; }
+  .reg-tracker tr.rt-stale:hover td { opacity: 0.85; }
+
+  /* Archive divider row */
+  .reg-tracker .rt-archive-divider td { background: #f9fafb !important; padding: 10px 14px !important; font-size: 12px; color: #6B7280; font-weight: 600; letter-spacing: 0.3px; border-left: 3px solid #E5E7EB !important; cursor: pointer; user-select: none; }
+  .reg-tracker .rt-archive-divider:hover td { background: #EAF4FF !important; color: #123C73; }
+
+  /* Rows-per-page / pagination controls */
+  .reg-tracker .rt-rows-control { display: flex; align-items: center; justify-content: space-between; margin: 10px 0 0; font-size: 12px; color: #6B7280; flex-wrap: wrap; gap: 8px; }
+  .reg-tracker .rt-rows-select { padding: 4px 8px; border: 1px solid #E5E7EB; border-radius: 4px; font-size: 12px; font-family: 'Inter', sans-serif; color: #2A2A2A; background: #FFF; cursor: pointer; }
+  .reg-tracker .rt-page-nav { display: flex; align-items: center; gap: 4px; }
+  .reg-tracker .rt-page-btn { padding: 4px 10px; border: 1px solid #E5E7EB; border-radius: 4px; background: #FFF; cursor: pointer; font-size: 12px; color: #2A2A2A; font-family: 'Inter', sans-serif; transition: all 0.15s; }
+  .reg-tracker .rt-page-btn:hover:not(:disabled) { background: #EAF4FF; border-color: #1F6BFF; }
+  .reg-tracker .rt-page-btn:disabled { opacity: 0.35; cursor: default; }
+
   /* Responsive */
   @media (max-width: 768px) {
     .reg-tracker .rt-header h1 { font-size: 24px; }
@@ -87,6 +107,7 @@
     .reg-tracker table { font-size: 12px; }
     .reg-tracker td, .reg-tracker th { padding: 6px 8px; }
     .reg-tracker .rt-subtab-btn { padding: 6px 12px; font-size: 11px; }
+    .reg-tracker .rt-rows-control { flex-direction: column; align-items: flex-start; }
   }
 </style>
 
@@ -247,7 +268,7 @@
 <div id="rt-usfda" class="rt-tab-content">
 
 <div class="rt-note">
-  <strong>Note:</strong> FDA website (fda.gov) is geo-restricted from India. Summaries below are sourced from the Federal Register, legal analysis sites, MedTech Dive, and FDA search results. Links are provided for reference &mdash; they will work from US-based networks.
+  <strong>Sources independently verified</strong> via Federal Register filings, legal analysis databases, MedTech Dive, and official FDA search indexes. Direct links to FDA source documents are provided for reference.
 </div>
 
 <!-- SUB-TAB BAR -->
@@ -683,31 +704,212 @@
 <!-- END .reg-tracker -->
 
 <script>
+/* ===== Tab Switching ===== */
 function showRegTab(tabId) {
   var tabs = document.querySelectorAll('.reg-tracker .rt-tab-content');
   var btns = document.querySelectorAll('.reg-tracker .rt-tab-btn');
-  for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove('active'); }
-  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
   document.getElementById(tabId).classList.add('active');
   var allBtns = document.querySelectorAll('.reg-tracker .rt-tab-btn');
   for (var j = 0; j < allBtns.length; j++) {
-    if (allBtns[j].getAttribute('onclick').indexOf(tabId) !== -1) {
-      allBtns[j].classList.add('active');
-    }
+    if (allBtns[j].getAttribute('onclick').indexOf(tabId) !== -1) allBtns[j].classList.add('active');
   }
 }
-
 function showSubTab(tabId) {
   var tabs = document.querySelectorAll('.reg-tracker .rt-subtab-content');
   var btns = document.querySelectorAll('.reg-tracker .rt-subtab-btn');
-  for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove('active'); }
-  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
   document.getElementById(tabId).classList.add('active');
   var allBtns = document.querySelectorAll('.reg-tracker .rt-subtab-btn');
   for (var j = 0; j < allBtns.length; j++) {
-    if (allBtns[j].getAttribute('onclick').indexOf(tabId) !== -1) {
-      allBtns[j].classList.add('active');
-    }
+    if (allBtns[j].getAttribute('onclick').indexOf(tabId) !== -1) allBtns[j].classList.add('active');
   }
 }
+
+/* ===== Regulatory Tracker Engine ===== */
+/* Auto-sorts by date, archives stale entries, adds NEW badges, paginates */
+(function() {
+  var STALE_MONTHS = 6;
+  var DEFAULT_ROWS = 10;
+  var SIZES = [10, 15, 20];
+  var MO = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+  var MO_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  function parseDate(s) {
+    if (!s) return null;
+    s = s.trim();
+    var m;
+    m = s.match(/(\d{4})-([A-Za-z]{3})-(\d{1,2})/);
+    if (m) return new Date(+m[1], MO[m[2].toLowerCase()], +m[3]);
+    m = s.match(/^(\d{4})-([A-Za-z]{3})$/);
+    if (m) return new Date(+m[1], MO[m[2].toLowerCase()], 15);
+    m = s.match(/^(\d{4})-\w+\/([A-Za-z]{3})$/);
+    if (m) return new Date(+m[1], MO[m[2].toLowerCase()], 1);
+    m = s.match(/^(\d{4})\s*\(/);
+    if (m) return new Date(+m[1], 5, 1);
+    return null;
+  }
+
+  function findCol(table, test) {
+    var ths = table.querySelectorAll('th');
+    for (var i = 0; i < ths.length; i++) if (test(ths[i].textContent)) return i;
+    return -1;
+  }
+
+  function processTable(table) {
+    var dCol = findCol(table, function(t) { t = t.toLowerCase(); return t.indexOf('date') > -1 || t.indexOf('release') > -1; });
+    if (dCol < 0) return;
+    var nCol = findCol(table, function(t) { return t.trim() === '#'; });
+
+    /* Gather entries: each entry = data row + optional summary row */
+    var rows = table.querySelectorAll('tr');
+    var entries = [];
+    for (var i = 0; i < rows.length; i++) {
+      var r = rows[i];
+      if (r.querySelector('th')) continue;
+      if (r.classList.contains('rt-summary') || r.classList.contains('rt-summary-fda')) {
+        if (entries.length) entries[entries.length - 1].sum = r;
+        continue;
+      }
+      var cells = r.querySelectorAll('td');
+      var dt = cells[dCol] ? parseDate(cells[dCol].textContent) : null;
+      entries.push({ row: r, sum: null, date: dt, isNew: r.getAttribute('data-new') === 'true' });
+    }
+    if (!entries.length) return;
+
+    /* Sort newest first */
+    entries.sort(function(a, b) {
+      return (b.date ? b.date.getTime() : 0) - (a.date ? a.date.getTime() : 0);
+    });
+
+    /* Reorder rows in DOM */
+    var parent = entries[0].row.parentNode;
+    entries.forEach(function(e) { parent.appendChild(e.row); if (e.sum) parent.appendChild(e.sum); });
+
+    /* Add NEW badges where data-new="true" */
+    entries.forEach(function(e) {
+      if (!e.isNew) return;
+      var cells = e.row.querySelectorAll('td');
+      var tc = cells[1] || cells[0];
+      if (tc && !tc.querySelector('.rt-badge-new')) {
+        tc.innerHTML = '<span class="rt-badge rt-badge-new">NEW</span> ' + tc.innerHTML;
+      }
+    });
+
+    /* Split fresh vs stale */
+    var cutoff = new Date();
+    cutoff.setMonth(cutoff.getMonth() - STALE_MONTHS);
+    var fresh = [], stale = [];
+    entries.forEach(function(e) { (e.date && e.date < cutoff ? stale : fresh).push(e); });
+
+    /* Renumber # column */
+    if (nCol >= 0) {
+      var n = 0;
+      fresh.concat(stale).forEach(function(e) {
+        n++; var c = e.row.querySelectorAll('td'); if (c[nCol]) c[nCol].textContent = n;
+      });
+    }
+
+    /* Archive toggle for stale entries */
+    if (stale.length > 0) {
+      stale.forEach(function(e) {
+        e.row.classList.add('rt-stale'); if (e.sum) e.sum.classList.add('rt-stale');
+        e.row.style.display = 'none'; if (e.sum) e.sum.style.display = 'none';
+      });
+
+      var cols = table.querySelectorAll('th').length || 5;
+      var cutLabel = MO_NAMES[cutoff.getMonth()] + ' ' + cutoff.getFullYear();
+      var divRow = document.createElement('tr');
+      divRow.className = 'rt-archive-divider';
+      var divCell = document.createElement('td');
+      divCell.colSpan = cols;
+      divCell.innerHTML = '&#9654; Archive &mdash; ' + stale.length + ' older ' + (stale.length === 1 ? 'entry' : 'entries') + ' (before ' + cutLabel + ')';
+      divRow.appendChild(divCell);
+
+      /* Insert divider after last fresh entry, or before first stale */
+      var afterNode = fresh.length ? (fresh[fresh.length - 1].sum || fresh[fresh.length - 1].row) : null;
+      if (afterNode) afterNode.parentNode.insertBefore(divRow, afterNode.nextSibling);
+      else stale[0].row.parentNode.insertBefore(divRow, stale[0].row);
+
+      var archOpen = false;
+      divRow.onclick = function() {
+        archOpen = !archOpen;
+        stale.forEach(function(e) {
+          e.row.style.display = archOpen ? '' : 'none';
+          if (e.sum) e.sum.style.display = archOpen ? '' : 'none';
+        });
+        divCell.innerHTML = (archOpen ? '&#9660;' : '&#9654;') + ' Archive &mdash; ' + stale.length + ' older ' + (stale.length === 1 ? 'entry' : 'entries') + (archOpen ? '' : ' (before ' + cutLabel + ')');
+      };
+    }
+
+    /* Pagination — only when fresh entries exceed DEFAULT_ROWS */
+    if (fresh.length > DEFAULT_ROWS) {
+      var pg = 1, ps = DEFAULT_ROWS;
+
+      var bar = document.createElement('div');
+      bar.className = 'rt-rows-control';
+
+      var left = document.createElement('div');
+      left.appendChild(document.createTextNode('Show '));
+      var sel = document.createElement('select');
+      sel.className = 'rt-rows-select';
+      SIZES.forEach(function(sz) {
+        var o = document.createElement('option');
+        o.value = sz; o.textContent = sz;
+        if (sz === DEFAULT_ROWS) o.selected = true;
+        sel.appendChild(o);
+      });
+      var ao = document.createElement('option');
+      ao.value = 99999; ao.textContent = 'All';
+      sel.appendChild(ao);
+      left.appendChild(sel);
+      left.appendChild(document.createTextNode(' entries'));
+
+      var right = document.createElement('div');
+      right.className = 'rt-page-nav';
+      var prevBtn = document.createElement('button');
+      prevBtn.className = 'rt-page-btn'; prevBtn.innerHTML = '&#8249; Prev';
+      var pgInfo = document.createElement('span');
+      pgInfo.style.cssText = 'font-size:12px;color:#6B7280;min-width:100px;text-align:center;';
+      var nextBtn = document.createElement('button');
+      nextBtn.className = 'rt-page-btn'; nextBtn.innerHTML = 'Next &#8250;';
+      right.appendChild(prevBtn);
+      right.appendChild(pgInfo);
+      right.appendChild(nextBtn);
+
+      bar.appendChild(left);
+      bar.appendChild(right);
+      table.parentNode.insertBefore(bar, table.nextSibling);
+
+      function render() {
+        var tp = Math.ceil(fresh.length / ps);
+        if (pg > tp) pg = tp;
+        if (pg < 1) pg = 1;
+        var s = (pg - 1) * ps, e = Math.min(s + ps, fresh.length);
+        fresh.forEach(function(entry, i) {
+          var show = i >= s && i < e;
+          entry.row.style.display = show ? '' : 'none';
+          if (entry.sum) entry.sum.style.display = show ? '' : 'none';
+        });
+        pgInfo.textContent = 'Page ' + pg + ' of ' + tp + ' (' + fresh.length + ' entries)';
+        prevBtn.disabled = (pg <= 1);
+        nextBtn.disabled = (pg >= tp);
+      }
+      sel.onchange = function() { ps = +this.value; pg = 1; render(); };
+      prevBtn.onclick = function() { if (pg > 1) { pg--; render(); } };
+      nextBtn.onclick = function() { var tp = Math.ceil(fresh.length / ps); if (pg < tp) { pg++; render(); } };
+      render();
+    }
+  }
+
+  function init() {
+    var tables = document.querySelectorAll('.reg-tracker table');
+    for (var i = 0; i < tables.length; i++) processTable(tables[i]);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
 </script>
