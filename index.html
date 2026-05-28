@@ -1,0 +1,588 @@
+<!-- NexorTest Medical Device Regulatory Tracker — WordPress/Elementor Ready -->
+<!-- Paste this entire block into an Elementor HTML widget -->
+
+<style>
+  .reg-tracker { font-family: 'Inter', sans-serif; color: #2A2A2A; max-width: 1100px; margin: 0 auto; background: #f9fafb; font-size: 14px; line-height: 1.6; }
+  .reg-tracker * { box-sizing: border-box; }
+
+  /* Header */
+  .reg-tracker .rt-header { background: linear-gradient(135deg, #27c3bc, #7c54c7); color: #FFFFFF; padding: 30px 32px; border-radius: 8px 8px 0 0; }
+  .reg-tracker .rt-header h1 { margin: 0; font-size: 36px; font-weight: 700; color: #FFFFFF; border: none; padding: 0; }
+  .reg-tracker .rt-header p { margin: 6px 0 0 0; font-size: 14px; color: rgba(255,255,255,0.85); }
+
+  /* Tab bar */
+  .reg-tracker .rt-tab-bar { display: flex; background: #0B1F3A; border-bottom: 3px solid #123C73; }
+  .reg-tracker .rt-tab-btn { padding: 14px 32px; cursor: pointer; background: #0B1F3A; color: #6B7280; border: none; font-size: 15px; font-weight: 600; font-family: 'Inter', sans-serif; transition: all 0.25s ease; border-right: 1px solid rgba(255,255,255,0.08); }
+  .reg-tracker .rt-tab-btn:hover { background: #123C73; color: #FFFFFF; }
+  .reg-tracker .rt-tab-btn.active { background: #123C73; color: #FFFFFF; border-bottom: 3px solid #00B8D9; margin-bottom: -3px; }
+
+  /* Tab content */
+  .reg-tracker .rt-tab-content { display: none; padding: 24px; }
+  .reg-tracker .rt-tab-content.active { display: block; }
+
+  /* Content wrapper */
+  .reg-tracker .rt-content { border: 1px solid #E5E7EB; border-top: none; background: #FFFFFF; border-radius: 0 0 8px 8px; }
+
+  /* Headings */
+  .reg-tracker h2 { color: #0B1F3A; font-size: 24px; font-weight: 700; border-bottom: 2px solid #E5E7EB; padding-bottom: 10px; margin-top: 28px; margin-bottom: 14px; }
+  .reg-tracker h2:first-of-type { margin-top: 10px; }
+  .reg-tracker h3 { color: #123C73; font-size: 16px; font-weight: 600; margin-top: 20px; }
+  .reg-tracker p { font-size: 14px; color: #6B7280; margin: 6px 0 12px 0; }
+  .reg-tracker p a { color: #1F6BFF; text-decoration: none; font-weight: 500; }
+  .reg-tracker p a:hover { text-decoration: underline; }
+
+  /* Scan block */
+  .reg-tracker .rt-scan-block { background: #f9fafb; border: 1px solid #E5E7EB; border-radius: 8px; padding: 20px; margin: 20px 0; }
+  .reg-tracker .rt-scan-date { background: #0B1F3A; color: #FFFFFF; display: inline-block; padding: 5px 14px; border-radius: 4px; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; }
+  .reg-tracker .rt-scan-date.fda { background: #123C73; }
+
+  /* Tables */
+  .reg-tracker table { width: 100%; border-collapse: collapse; margin: 12px 0; border-radius: 6px; overflow: hidden; border: 1px solid #E5E7EB; }
+  .reg-tracker th { background-color: #0B1F3A; color: #FFFFFF; padding: 10px 12px; border: 1px solid #E5E7EB; text-align: left; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+  .reg-tracker th.fda { background-color: #123C73; }
+  .reg-tracker td { padding: 10px 12px; border: 1px solid #E5E7EB; font-size: 14px; color: #2A2A2A; }
+  .reg-tracker tr:nth-child(even) { background-color: #f9fafb; }
+  .reg-tracker tr:hover { background-color: #EAF4FF; }
+
+  /* Links */
+  .reg-tracker .rt-link { color: #1F6BFF; text-decoration: none; font-weight: 600; font-size: 13px; }
+  .reg-tracker .rt-link:hover { text-decoration: underline; color: #123C73; }
+
+  /* Summary rows */
+  .reg-tracker .rt-summary td { background: #EAF4FF !important; font-size: 13px; padding: 12px 14px; color: #2A2A2A; line-height: 1.65; border-left: 3px solid #00B8D9; }
+  .reg-tracker .rt-summary-fda td { background: #EAF4FF !important; font-size: 13px; padding: 12px 14px; color: #2A2A2A; line-height: 1.65; border-left: 3px solid #7c54c7; }
+
+  /* Badges */
+  .reg-tracker .rt-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.5px; }
+  .reg-tracker .rt-badge-final { background: #00B8D9; }
+  .reg-tracker .rt-badge-draft { background: #7c54c7; }
+  .reg-tracker .rt-badge-recall { background: #dc2626; }
+  .reg-tracker .rt-badge-alert { background: #f59e0b; }
+
+  /* Note box */
+  .reg-tracker .rt-note { background: #EAF4FF; border-left: 4px solid #00B8D9; padding: 12px 16px; margin: 12px 0; font-size: 13px; color: #2A2A2A; border-radius: 0 6px 6px 0; }
+
+  /* Footer */
+  .reg-tracker .rt-footer { font-size: 12px; color: #6B7280; margin-top: 30px; border-top: 1px solid #E5E7EB; padding: 18px 24px; }
+  .reg-tracker .rt-footer a { color: #1F6BFF; text-decoration: none; }
+  .reg-tracker .rt-footer a:hover { text-decoration: underline; }
+
+  /* Class I recall color */
+  .reg-tracker .rt-class1 { color: #dc2626; font-weight: 700; font-size: 13px; }
+  .reg-tracker .rt-early-alert { color: #f59e0b; font-weight: 700; font-size: 13px; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .reg-tracker .rt-header h1 { font-size: 24px; }
+    .reg-tracker .rt-tab-btn { padding: 10px 16px; font-size: 13px; }
+    .reg-tracker .rt-tab-content { padding: 14px; }
+    .reg-tracker table { font-size: 12px; }
+    .reg-tracker td, .reg-tracker th { padding: 6px 8px; }
+  }
+</style>
+
+<div class="reg-tracker">
+
+<!-- HEADER -->
+<div class="rt-header">
+  <h1>Medical Device Regulatory Tracker</h1>
+  <p>CDSCO (India) &amp; USFDA (US) &mdash; Automated Weekly Monitor</p>
+  <p>Updated weekly. New entries are added at the top &mdash; data is never replaced.</p>
+</div>
+
+<div class="rt-content">
+
+<!-- TAB BAR -->
+<div class="rt-tab-bar">
+  <button class="rt-tab-btn active" onclick="showRegTab('rt-cdsco')">CDSCO (India)</button>
+  <button class="rt-tab-btn" onclick="showRegTab('rt-usfda')">USFDA (US)</button>
+</div>
+
+<!-- ==================== TAB: CDSCO ==================== -->
+<div id="rt-cdsco" class="rt-tab-content active">
+
+<!-- ==================== SCAN: 2026-05-25 ==================== -->
+<div class="rt-scan-block">
+<span class="rt-scan-date">Scan Date: May 25, 2026</span>
+
+<h2>Medical Device &amp; Diagnostics</h2>
+<p><a href="https://cdsco.gov.in/opencms/opencms/en/Medical-Device-Diagnostics/Medical-Device-Diagnostics/">View on CDSCO website &rarr;</a></p>
+
+<table>
+  <tr>
+    <th>Tab</th>
+    <th>Latest Entry</th>
+    <th>Release Date</th>
+    <th>PDF</th>
+    <th>Size</th>
+  </tr>
+  <tr>
+    <td>Alerts</td>
+    <td>Medical Device Alert dated 08 May 2023</td>
+    <td>2023-May-23</td>
+    <td><a class="rt-link" href="https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadAlertsFiles/Medical%20Device%20Alert%20-Hoya%20Vivinex%20Toric%20IOLs.pdf" target="_blank">Download PDF</a></td>
+    <td>1842 KB</td>
+  </tr>
+  <tr class="rt-summary">
+    <td colspan="5">
+      <strong>Summary:</strong> Class II recall of HOYA Vivinex iSert Toric IOLs (Models XY1AT2&ndash;XY1AT9) manufactured June 2022 &ndash; January 2023. Customer complaints from Australia and Japan reported scratches and polypropylene (PP) resin fragment adhesion on the IOL optic surface, caused by nozzle tip damage in the iSert injector during implantation. 3,823 units across multiple sterilization batches were affected in India. Customers are instructed to quarantine affected devices; IOL explantation is not recommended, but monitoring of implanted patients is advised.
+    </td>
+  </tr>
+  <tr>
+    <td>News</td>
+    <td>Seminar on Strengthening Medical Device Licence Holders on Post-Market Safety Surveillance Practices in India &mdash; PGIMER Chandigarh, 3rd September 2024</td>
+    <td>2024-Jul-26</td>
+    <td><a class="rt-link" href="https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadNewsFiles/PGIMER%20SEMINAR%20BROCHURE%20-%2018.7.2024-1.pdf" target="_blank">Download PDF</a></td>
+    <td>1515 KB</td>
+  </tr>
+  <tr class="rt-summary">
+    <td colspan="5">
+      <strong>Summary:</strong> Brochure for a seminar organized by Indian Pharmacopoeia Commission &ndash; Materiovigilance Programme of India (IPC-MvPI) held on 3 September 2024 at PGIMER, Chandigarh. The seminar covered post-market surveillance requirements under Medical Devices Rules 2017, the MvPI reporting system, QMS requirements for domestic manufacturers, risk mitigation strategies, and best practices for materiovigilance.
+    </td>
+  </tr>
+  <tr>
+    <td>Public Notices</td>
+    <td>Risk classification list of medical devices pertaining to Oncology</td>
+    <td>2026-Jan-02</td>
+    <td><a class="rt-link" href="https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadPublic_NoticesFiles/Risk%20classification%20list%20of%20medical%20devices%20pertaining%20to%20Oncology.pdf" target="_blank">Download PDF</a></td>
+    <td>308 KB</td>
+  </tr>
+  <tr class="rt-summary">
+    <td colspan="5">
+      <strong>Summary:</strong> Official notice (File No. MED-16014(12)/1/2024-eoffice, dated 02 Jan 2026) classifying 77 oncology-related medical devices under Rule 4 of Medical Devices Rules, 2017. Devices span radiation therapy systems, ablation systems, hyperthermia systems, cancer diagnostic tools, drug delivery devices, and supportive devices. Risk classes range from A to D.
+    </td>
+  </tr>
+  <tr>
+    <td>Gazette Notifications</td>
+    <td>02.06.2023 G.S.R 409(E) Medical Devices</td>
+    <td>2023-Jun-02</td>
+    <td><a class="rt-link" href="https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadGazette_NotificationsFiles/246242.pdf" target="_blank">Download PDF</a></td>
+    <td>1157 KB</td>
+  </tr>
+  <tr class="rt-summary">
+    <td colspan="5">
+      <strong>Summary:</strong> Gazette notification G.S.R. 409(E) dated 2 June 2023 &mdash; Medical Devices (Amendment) Rules, 2023. Key amendments: introduces the definition of &ldquo;State Medical Devices Testing Laboratory&rdquo;; amends Rule 18 to allow State Governments to establish testing infrastructure; amends Rule 19 to empower State Governments to designate State Medical Devices Testing Laboratories.
+    </td>
+  </tr>
+</table>
+
+<h2>InVitro Diagnostics (IVD)</h2>
+<p><a href="https://cdsco.gov.in/opencms/opencms/en/Medical-Device-Diagnostics/InVitro-Diagnostics/">View on CDSCO website &rarr;</a></p>
+
+<table>
+  <tr>
+    <th>Tab</th>
+    <th>Latest Entry</th>
+    <th>Release Date</th>
+    <th>PDF</th>
+    <th>Size</th>
+  </tr>
+  <tr>
+    <td>Alerts</td>
+    <td>IN-VITRO DIAGNOSTIC ALERT FOR PRODUCT &ldquo;BBL(TM) MGIT(TM) Mycobacteria Growth Indicator Tube&rdquo;</td>
+    <td>2018-Mar-03</td>
+    <td><a class="rt-link" href="https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadAlertsFiles/1B1N-2010DC1.pdf" target="_blank">Download PDF</a></td>
+    <td>196 KB</td>
+  </tr>
+  <tr class="rt-summary">
+    <td colspan="5">
+      <strong>Summary:</strong> Diagnostic Kit Alert for voluntary recall of BBL MGIT Mycobacteria Growth Indicator Tube (Lot No. 3042467). The product had an incorrect barcode prefix (&ldquo;43 02&rdquo; instead of &ldquo;43 01&rdquo;) on a portion of tubes, causing the BACTEC MGIT instrument to report incorrect growth and detection results. Of 11,800 pieces imported into India, 7,100 were recalled by Becton Dickinson.
+    </td>
+  </tr>
+  <tr>
+    <td>News</td>
+    <td>Launch of MedTech Mitra&rsquo;s In-Vitro Diagnostic Innovators Handbook (Short video)</td>
+    <td>2025-Dec-23</td>
+    <td><a class="rt-link" href="https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadNewsFiles/In-Vitro%20Diagnostic%20Innovators%20Handbook%20launch.mp4" target="_blank">Download Video (MP4)</a></td>
+    <td>9854 KB</td>
+  </tr>
+  <tr class="rt-summary">
+    <td colspan="5">
+      <strong>Summary:</strong> This entry is an MP4 video (not a PDF). It contains a short video of the launch event for MedTech Mitra&rsquo;s In-Vitro Diagnostic Innovators Handbook, published on 23 December 2025.
+    </td>
+  </tr>
+  <tr>
+    <td>Public Notices</td>
+    <td>Addendum to Doc No. CDSCO.IVD.FAQ.04.2022 dated 13.03.2026</td>
+    <td>2026-Mar-13</td>
+    <td><a class="rt-link" href="https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadPublic_NoticesFiles/Addendum-Doc-No-CDSCOIVDFAQ-042022dated%2013032026.pdf" target="_blank">Download PDF</a></td>
+    <td>321 KB</td>
+  </tr>
+  <tr class="rt-summary">
+    <td colspan="5">
+      <strong>Summary:</strong> Addendum No. 02 (dated 13 March 2026) to the CDSCO IVD FAQ document. Contains 24 FAQs covering: license retention and endorsement procedures, QMS re-inspection requirements, fee structures for Class A/B and C/D IVD imports, late fee provisions under MDR 2017, application limits (max 15 products per application), classification of multi-parameter devices, veterinary IVD requirements, and post-approval change (PAC) procedures.
+    </td>
+  </tr>
+  <tr>
+    <td>Gazette Notifications</td>
+    <td>S.O. 5980(E) dated 03.12.2018</td>
+    <td>2018-Dec-03</td>
+    <td><a class="rt-link" href="https://cdsco.gov.in/opencms/resources/UploadCDSCOWeb/2018/UploadGazette_NotificationsFiles/5980.pdf" target="_blank">Download PDF</a></td>
+    <td>279 KB</td>
+  </tr>
+  <tr class="rt-summary">
+    <td colspan="5">
+      <strong>Summary:</strong> Gazette notification S.O. 5980(E) &mdash; specifies four device categories as &ldquo;drugs&rdquo; for regulatory purposes, effective 1 January 2020: (i) Nebulizers, (ii) Blood Pressure Monitoring Devices, (iii) Digital Thermometers, and (iv) Glucometers.
+    </td>
+  </tr>
+</table>
+
+</div>
+<!-- ==================== END SCAN: 2026-05-25 ==================== -->
+
+</div>
+<!-- ==================== END TAB: CDSCO ==================== -->
+
+
+<!-- ==================== TAB: USFDA ==================== -->
+<div id="rt-usfda" class="rt-tab-content">
+
+<!-- ==================== SCAN: 2026-05-25 ==================== -->
+<div class="rt-scan-block">
+<span class="rt-scan-date fda">Scan Date: May 25, 2026 &mdash; All Sources (Last 2 Months: Mar&ndash;May 2026)</span>
+
+<div class="rt-note">
+  <strong>Note:</strong> FDA website (fda.gov) is geo-restricted from India. Summaries below are sourced from the Federal Register, legal analysis sites, MedTech Dive, Cardiovascular Business, and FDA search results. Links are provided for reference &mdash; they will work from US-based networks.
+</div>
+
+<!-- Guidance Documents -->
+<h2>Guidance Documents</h2>
+<p><a href="https://www.fda.gov/medical-devices/device-advice-comprehensive-regulatory-assistance/guidance-documents-medical-devices-and-radiation-emitting-products">View on FDA website &rarr;</a></p>
+
+<table>
+  <tr>
+    <th class="fda">#</th>
+    <th class="fda">Guidance Title</th>
+    <th class="fda">Status</th>
+    <th class="fda">Date Issued</th>
+    <th class="fda">PDF</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Medical Devices with Indications Associated with Weight Loss &mdash; Premarket Considerations</td>
+    <td><span class="rt-badge rt-badge-final">FINAL</span></td>
+    <td>2026-Mar-12</td>
+    <td><a class="rt-link" href="https://www.fda.gov/media/191489/download" target="_blank">PDF</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="5">
+      <strong>Summary:</strong> Final guidance establishing a benefit-risk framework for weight-loss medical devices. Key clinical thresholds: &ldquo;weight loss&rdquo; indication requires minimum 5% superiority margin; &ldquo;limited weight loss&rdquo; requires at least 2%. Responder rate endpoint requires at least 50% of participants achieve at least 5% total body weight loss. Sham-controlled studies recommended for first-in-kind devices. Applies across De Novo, PMA, and 510(k) pathways.
+    </td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Incorporating Voluntary Patient Preference Information over the Total Product Life Cycle</td>
+    <td><span class="rt-badge rt-badge-final">FINAL</span></td>
+    <td>2026-Mar-27</td>
+    <td><a class="rt-link" href="https://www.fda.gov/media/92593/download" target="_blank">PDF</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="5">
+      <strong>Summary:</strong> Updated final guidance (supersedes August 2016 version) on how voluntary patient preference information (PPI) may be considered by FDA across the total product life cycle. PPI can inform IDE applications, Breakthrough Device designations, PMA/HDE/De Novo/510(k) reviews, and postmarket enforcement decisions. PPI submission remains voluntary. CDRH Learn module released May 15, 2026.
+    </td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Clinical Decision Support Software</td>
+    <td><span class="rt-badge rt-badge-final">FINAL</span></td>
+    <td>2026-Jan-06</td>
+    <td><a class="rt-link" href="https://www.fda.gov/media/191560/download" target="_blank">PDF</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="5">
+      <strong>Summary:</strong> Revised final guidance clarifying FDA oversight of clinical decision support software under Section 520(o)(1)(E). Key updates: enforcement discretion for CDS producing a single clinically appropriate recommendation; greater emphasis on transparency of data inputs and logic &mdash; especially for AI-driven CDS; expanded examples of Non-Device CDS. Town Hall held March 11, 2026.
+    </td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Use of Real-World Evidence to Support Regulatory Decision-Making for Medical Devices</td>
+    <td><span class="rt-badge rt-badge-final">FINAL</span></td>
+    <td>2025-Dec-17</td>
+    <td><a class="rt-link" href="https://www.fda.gov/media/190201/download" target="_blank">PDF</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="5">
+      <strong>Summary:</strong> Major updated guidance on using real-world evidence (RWE) in device regulatory submissions. FDA removed the previous requirement for identifiable individual patient-level data, enabling large de-identified healthcare datasets. RWE can now support marketing authorization as primary clinical evidence, hypothesis generation, postmarket surveillance, and labeling updates. Industry operationalization from February 16, 2026.
+    </td>
+  </tr>
+</table>
+
+<!-- CDRH News & Updates -->
+<h2>CDRH News &amp; Updates</h2>
+<p><a href="https://www.fda.gov/medical-devices/medical-devices-news-and-events/cdrh-new-news-and-updates">View on FDA website &rarr;</a></p>
+
+<table>
+  <tr>
+    <th class="fda">#</th>
+    <th class="fda">News / Update</th>
+    <th class="fda">Date</th>
+    <th class="fda">Link</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>CMS &amp; FDA Announce RAPID Coverage Pathway for Breakthrough Medical Devices</td>
+    <td>2026-Apr-23</td>
+    <td><a class="rt-link" href="https://www.fda.gov/news-events/press-announcements/cms-and-fda-announce-rapid-coverage-pathway-accelerate-patient-access-life-changing-medical-devices" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="4">
+      <strong>Summary:</strong> CMS and FDA jointly announced the RAPID (Regulatory Alignment for Predictable and Immediate Device) coverage pathway. CMS will issue a proposed NCD the same day an eligible device receives FDA market authorization, with a 30-day comment period. This could enable Medicare national coverage within ~2 months vs. the current ~1 year+. Eligible for Class II devices in TAP and any Class III with IDE studies enrolling Medicare beneficiaries.
+    </td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Town Hall &mdash; Clinical Decision Support Software, Final Guidance</td>
+    <td>2026-Mar-11</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-devices-news-and-events/town-hall-clinical-decision-support-software-final-guidance-03112026" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="4">
+      <strong>Summary:</strong> CDRH held a public Town Hall on the updated final CDS guidance. Key topics: clarification of the four statutory criteria defining &ldquo;Non-Device CDS&rdquo;; FDA&rsquo;s enforcement discretion policy for single-recommendation CDS; expanded examples. Presentation slides and transcript available.
+    </td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>TEMPO Pilot Program &mdash; Follow-Up Requests to Potential Participants</td>
+    <td>2026-Mar</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-devices-news-and-events/cdrh-new-news-and-updates" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="4">
+      <strong>Summary:</strong> FDA began sending follow-up requests to TEMPO (Tailored Approvals to Modernize Patient Access to Digital Health Options) pilot participants. TEMPO streamlines regulatory pathways for digital health technologies. The program is moving from application review to deeper engagement with selected participants.
+    </td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>FY2026 CDRH Guidance Agenda Updated &mdash; A-List and B-List Priorities</td>
+    <td>2026 (Updated)</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/guidance-documents-medical-devices-and-radiation-emitting-products/cdrh-proposed-guidances-fiscal-year-2026-fy2026" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="4">
+      <strong>Summary:</strong> A-List priorities: 4 final guidances (Real-World Evidence, Predetermined Change Control Plans, Diagnostic Tests for Emerging Pathogens, Patient Preference Information) and 4 draft guidances (AI-Enabled Device Software, Air Purifying Respirators, Menstrual Products, others). B-List: finalization of 3 additional guidance documents. Over 1,350 AI-enabled devices authorized by early 2026.
+    </td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Draft Guidance &mdash; AI-Enabled Device Software Functions: Lifecycle Management</td>
+    <td>2025-Jan-06</td>
+    <td><a class="rt-link" href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/artificial-intelligence-enabled-device-software-functions-lifecycle-management-and-marketing" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="4">
+      <strong>Summary:</strong> <span class="rt-badge rt-badge-draft">DRAFT</span> Comprehensive draft guidance covering AI-enabled device software lifecycle &mdash; design, labeling, bias mitigation, cybersecurity, postmarket surveillance, and PCCPs. On the FY2026 A-List for finalization. Represents FDA&rsquo;s shift to operational expectations for AI/ML in medical devices.
+    </td>
+  </tr>
+</table>
+
+<!-- Medical Device Recalls & Early Alerts -->
+<h2>Medical Device Recalls &amp; Early Alerts</h2>
+<p><a href="https://www.fda.gov/medical-devices/medical-device-safety/medical-device-recalls-and-early-alerts">View on FDA website &rarr;</a></p>
+
+<table>
+  <tr>
+    <th class="fda">#</th>
+    <th class="fda">Device / Company</th>
+    <th class="fda">Class</th>
+    <th class="fda">Date</th>
+    <th class="fda">Injuries / Deaths</th>
+    <th class="fda">Link</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Insulet &mdash; Omnipod 5 ACE Insulin Pump Pods</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026-Mar-12</td>
+    <td>476 injuries / 0 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/insulin-pump-recall-insulet-removes-certain-omnipod-5-pods" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Class I recall due to small tears in internal tubing causing insulin to leak inside the pod. Users may experience hyperglycemia without triggering an alarm, potentially leading to diabetic ketoacidosis (DKA). As of April 17, 2026: 476 serious injuries, no deaths. Customers advised to stop using affected lots.
+    </td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Boston Scientific &mdash; ACCOLADE Pacemakers &amp; CRT-Ps</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026-May-08</td>
+    <td>2,557 injuries / 4 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/pacemaker-correction-boston-scientific-issues-correction-accolade-pacemakers-and-crt-ps" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Software-related battery issue causes premature Safety Mode entry, limiting pacing. New Brady SMR6 update addresses the risk. Covers over 1 million pacemakers. As of March 18, 2026: 4 deaths and 2,557 serious injuries. Clinicians must apply software update during office visits.
+    </td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Medline Industries &mdash; Namic Angiographic Rotating Adaptor Syringes</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026-Mar</td>
+    <td>4 injuries / 0 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/angiographic-syringe-recall-medline-industries-removes-namic-angiographic-rotating-adaptor-control" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Syringe rotating adaptor may unwind during use, causing loose connection or disconnection. Risks include biohazard exposure, blood loss, infection, and air embolism. 250 complaints between June 2023 and February 2026. FDA also issued warning letter to Medline.
+    </td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>B. Braun Medical &mdash; Hemodialysis Bloodlines</td>
+    <td><span class="rt-early-alert">Early Alert</span></td>
+    <td>2026-Mar-25</td>
+    <td>0 injuries / 0 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/early-alert-bloodline-set-hemodialysis-systems-issue-b-braun-medical-inc" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Tubing resin change caused small air bubbles to adhere to arterial bloodline interior, potentially accumulating into larger bubbles. If the dialysis machine&rsquo;s air detector triggers, treatment stops. Patients may experience moderate blood loss. FDA urged use of alternate dialysis equipment.
+    </td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Fresenius Kabi &mdash; Ivenix Large Volume Infusion Pump Software</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026-Mar-04</td>
+    <td>2 injuries / 0 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/infusion-pump-software-correction-fresenius-kabi-issues-correction-ivenix-large-volume-pump-software" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Two software issues: (1) inaccurate battery capacity reporting during extended battery use, causing unexpected shutdown; (2) entering a rate with two leading zeroes causes a fail-stop alarm, freezing the interface. Software update issued.
+    </td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Medtronic &mdash; DLP Left Heart Vent Catheters</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026 (finalized)</td>
+    <td>3 injuries / 0 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/cardiac-cannula-recall-medtronic-removes-dlp-left-heart-vent-catheter" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Catheters (models 12110, 12113, 12115) resist shape retention when bent, risking abrasion and perforation. Three recalls cover over 101,000 catheters. Medtronic requested quarantine and return of all unused devices.
+    </td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>Johnson &amp; Johnson MedTech &mdash; Impella RP / RP Flex Heart Pumps</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026-Mar</td>
+    <td>3 deaths (AIC-related)</td>
+    <td><a class="rt-link" href="https://cardiovascularbusiness.com/topics/clinical/interventional-cardiology/fda-confirms-more-class-i-recalls-johnson-johnson-heart-pumps-due-malfunction-risk" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Three new recalls for Impella RP, RP with SmartAssist, and RP Flex with SmartAssist. Malfunctioning differential pressure (dP) sensors may produce inaccurate readings. Related: earlier AIC recall (Dec 2025) linked to 3 patient deaths. Cybersecurity-related recalls also issued for AIC controllers.
+    </td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>Erbe USA &mdash; Flexible Cryoprobes</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026-Feb/Mar</td>
+    <td>5 injuries / 0 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/early-alert-flexible-cryoprobe-issue-erbe-usa" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Recall of 40,952 flexible cryoprobes. May rupture or burst during activation due to insufficient adhesive in manufacturing. Ruptures produce loud sounds potentially causing tinnitus, hearing loss, and burns. Used for palliative tissue destruction and foreign body removal.
+    </td>
+  </tr>
+  <tr>
+    <td>9</td>
+    <td>Conavi Medical &mdash; Novasight Hybrid Intravascular Catheters</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026 (finalized)</td>
+    <td>0 injuries / 0 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/diagnostic-intravascular-catheter-recall-conavi-removes-novasight-hybrid-catheters" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Combined IVUS + OCT imaging catheter sheath became detached during use and was left in a patient&rsquo;s body. Risks include coronary artery spasm, dissection, perforation, thrombosis, and embolism. Catheter was safely removed. Affected lots: 230902, 240202, 240302, 240402, 240502.
+    </td>
+  </tr>
+</table>
+
+<!-- Press Announcements -->
+<h2>Press Announcements (Medical Device Related)</h2>
+<p><a href="https://www.fda.gov/news-events/fda-newsroom/press-announcements">View on FDA website &rarr;</a></p>
+
+<table>
+  <tr>
+    <th class="fda">#</th>
+    <th class="fda">Announcement</th>
+    <th class="fda">Date</th>
+    <th class="fda">Link</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>CMS &amp; FDA Announce RAPID Coverage Pathway to Accelerate Patient Access to Life-Changing Medical Devices</td>
+    <td>2026-Apr-23</td>
+    <td><a class="rt-link" href="https://www.fda.gov/news-events/press-announcements/cms-and-fda-announce-rapid-coverage-pathway-accelerate-patient-access-life-changing-medical-devices" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="4">
+      <strong>Summary:</strong> Joint press announcement introducing the RAPID pathway. CMS issues a proposed NCD on the same day as FDA market authorization, enabling Medicare national coverage as soon as 2 months post-authorization. Eligible for Class II devices in TAP and any Class III with IDE studies enrolling Medicare beneficiaries. Replaces the prior NTAP &ldquo;Alternative Pathway.&rdquo;
+    </td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>FDA Safety Communication &mdash; Accolade Pacemaker Devices by Boston Scientific</td>
+    <td>2026-May</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/safety-communications/accolade-pacemaker-devices-boston-scientific-and-potential-need-early-device-replacement-fda-safety" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="4">
+      <strong>Summary:</strong> FDA Safety Communication highlighting potential need for early device replacement due to battery failure and Safety Mode entry. Accompanies the Class I recall. Clinicians urged to apply Brady SMR6 software update and report adverse events through MedWatch.
+    </td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>FDA Expands AI Capabilities (Elsa 4.0) and Completes HALO Data Platform Consolidation</td>
+    <td>2026-May-06</td>
+    <td><a class="rt-link" href="https://www.fda.gov/news-events/press-announcements/fda-expands-ai-capabilities-and-completes-data-platform-consolidation" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="4">
+      <strong>Summary:</strong> FDA launched Elsa 4.0, an upgraded internal AI tool available to all FDA staff (reviewers, investigators), with new capabilities including custom agentic AI, document generation, data analysis/visualization, voice-to-text, OCR, and web search. Simultaneously completed consolidation of 40+ disparate submission data systems into HALO (Harmonized AI &amp; Lifecycle Operations for Data). HALO unifies application and submission portals across all FDA centers. Built within FedRAMP High secure Google Cloud &mdash; does not train on industry submissions. Commissioner Makary: &ldquo;Removing tedious burdens for staff enables them to focus more on science.&rdquo; Directly impacts device manufacturers&rsquo; submission workflows and could accelerate review timelines.
+    </td>
+  </tr>
+</table>
+
+</div>
+<!-- ==================== END SCAN: 2026-05-25 ==================== -->
+
+</div>
+<!-- ==================== END TAB: USFDA ==================== -->
+
+</div>
+
+<!-- FOOTER -->
+<div class="rt-footer">
+  <p>Automated report &mdash; Medical Device Regulatory Tracker | NexorTest Technologies<br>
+  Sources: <a href="https://cdsco.gov.in/opencms/opencms/en/Medical-Device-Diagnostics/Medical-Device-Diagnostics/">CDSCO Medical Devices</a> &middot; <a href="https://cdsco.gov.in/opencms/opencms/en/Medical-Device-Diagnostics/InVitro-Diagnostics/">CDSCO IVD</a> &middot; <a href="https://www.fda.gov/medical-devices/device-advice-comprehensive-regulatory-assistance/guidance-documents-medical-devices-and-radiation-emitting-products">USFDA Guidance</a> &middot; <a href="https://www.fda.gov/medical-devices/medical-devices-news-and-events/cdrh-new-news-and-updates">CDRH News</a> &middot; <a href="https://www.fda.gov/medical-devices/medical-device-safety/medical-device-recalls-and-early-alerts">FDA Recalls</a> &middot; <a href="https://www.fda.gov/news-events/fda-newsroom/press-announcements">FDA Press</a><br>
+  Updated weekly. New scan results are added above &mdash; older entries are preserved below.</p>
+</div>
+
+</div>
+<!-- END .reg-tracker -->
+
+<script>
+function showRegTab(tabId) {
+  var tabs = document.querySelectorAll('.reg-tracker .rt-tab-content');
+  var btns = document.querySelectorAll('.reg-tracker .rt-tab-btn');
+  for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove('active'); }
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
+  document.getElementById(tabId).classList.add('active');
+  var allBtns = document.querySelectorAll('.reg-tracker .rt-tab-btn');
+  for (var j = 0; j < allBtns.length; j++) {
+    if (allBtns[j].getAttribute('onclick').indexOf(tabId) !== -1) {
+      allBtns[j].classList.add('active');
+    }
+  }
+}
+</script>
