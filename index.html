@@ -67,6 +67,14 @@
   .reg-tracker .rt-footer a { color: #1F6BFF; text-decoration: none; }
   .reg-tracker .rt-footer a:hover { text-decoration: underline; }
 
+  /* Sub-tabs (nested within USFDA) */
+  .reg-tracker .rt-subtab-bar { display: flex; flex-wrap: wrap; gap: 6px; background: #f9fafb; padding: 10px 0; border-bottom: 2px solid #E5E7EB; margin-bottom: 16px; }
+  .reg-tracker .rt-subtab-btn { padding: 8px 18px; cursor: pointer; background: #FFFFFF; color: #6B7280; border: 1px solid #E5E7EB; font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif; border-radius: 20px; transition: all 0.2s ease; }
+  .reg-tracker .rt-subtab-btn:hover { background: #EAF4FF; color: #123C73; border-color: #1F6BFF; }
+  .reg-tracker .rt-subtab-btn.active { background: linear-gradient(135deg, #27c3bc, #7c54c7); color: #FFFFFF; border-color: transparent; }
+  .reg-tracker .rt-subtab-content { display: none; }
+  .reg-tracker .rt-subtab-content.active { display: block; }
+
   /* Class I recall color */
   .reg-tracker .rt-class1 { color: #dc2626; font-weight: 700; font-size: 13px; }
   .reg-tracker .rt-early-alert { color: #f59e0b; font-weight: 700; font-size: 13px; }
@@ -78,6 +86,7 @@
     .reg-tracker .rt-tab-content { padding: 14px; }
     .reg-tracker table { font-size: 12px; }
     .reg-tracker td, .reg-tracker th { padding: 6px 8px; }
+    .reg-tracker .rt-subtab-btn { padding: 6px 12px; font-size: 11px; }
   }
 </style>
 
@@ -237,15 +246,25 @@
 <!-- ==================== TAB: USFDA ==================== -->
 <div id="rt-usfda" class="rt-tab-content">
 
-<!-- ==================== SCAN: 2026-05-25 ==================== -->
-<div class="rt-scan-block">
-<span class="rt-scan-date fda">Scan Date: May 25, 2026 &mdash; All Sources (Last 2 Months: Mar&ndash;May 2026)</span>
-
 <div class="rt-note">
-  <strong>Note:</strong> FDA website (fda.gov) is geo-restricted from India. Summaries below are sourced from the Federal Register, legal analysis sites, MedTech Dive, Cardiovascular Business, and FDA search results. Links are provided for reference &mdash; they will work from US-based networks.
+  <strong>Note:</strong> FDA website (fda.gov) is geo-restricted from India. Summaries below are sourced from the Federal Register, legal analysis sites, MedTech Dive, and FDA search results. Links are provided for reference &mdash; they will work from US-based networks.
 </div>
 
-<!-- Guidance Documents -->
+<!-- SUB-TAB BAR -->
+<div class="rt-subtab-bar">
+  <button class="rt-subtab-btn active" onclick="showSubTab('st-guidance')">Guidance Documents</button>
+  <button class="rt-subtab-btn" onclick="showSubTab('st-cdrh')">CDRH News &amp; Updates</button>
+  <button class="rt-subtab-btn" onclick="showSubTab('st-letters')">Letters to Industry</button>
+  <button class="rt-subtab-btn" onclick="showSubTab('st-press')">Press Announcements</button>
+  <button class="rt-subtab-btn" onclick="showSubTab('st-recalls')">Recalls &amp; Early Alerts</button>
+</div>
+
+<!-- ====== SUB-TAB: Guidance Documents ====== -->
+<div id="st-guidance" class="rt-subtab-content active">
+
+<div class="rt-scan-block">
+<span class="rt-scan-date fda">Scan Date: May 26, 2026 &mdash; Mar&ndash;May 2026</span>
+
 <h2>Guidance Documents</h2>
 <p><a href="https://www.fda.gov/medical-devices/device-advice-comprehensive-regulatory-assistance/guidance-documents-medical-devices-and-radiation-emitting-products">View on FDA website &rarr;</a></p>
 
@@ -307,7 +326,17 @@
   </tr>
 </table>
 
-<!-- CDRH News & Updates -->
+</div>
+<!-- END scan-block -->
+</div>
+<!-- ====== END SUB-TAB: Guidance Documents ====== -->
+
+<!-- ====== SUB-TAB: CDRH News & Updates ====== -->
+<div id="st-cdrh" class="rt-subtab-content">
+
+<div class="rt-scan-block">
+<span class="rt-scan-date fda">Scan Date: May 26, 2026 &mdash; Mar&ndash;May 2026</span>
+
 <h2>CDRH News &amp; Updates</h2>
 <p><a href="https://www.fda.gov/medical-devices/medical-devices-news-and-events/cdrh-new-news-and-updates">View on FDA website &rarr;</a></p>
 
@@ -375,139 +404,77 @@
   </tr>
 </table>
 
-<!-- Medical Device Recalls & Early Alerts -->
-<h2>Medical Device Recalls &amp; Early Alerts</h2>
-<p><a href="https://www.fda.gov/medical-devices/medical-device-safety/medical-device-recalls-and-early-alerts">View on FDA website &rarr;</a></p>
+</div>
+<!-- END scan-block -->
+</div>
+<!-- ====== END SUB-TAB: CDRH News ====== -->
+
+<!-- ====== SUB-TAB: Letters to Industry ====== -->
+<div id="st-letters" class="rt-subtab-content">
+
+<div class="rt-scan-block">
+<span class="rt-scan-date fda">Scan Date: May 26, 2026 &mdash; Mar&ndash;May 2026</span>
+
+<h2>Letters to Industry</h2>
+<p><a href="https://www.fda.gov/medical-devices/industry-medical-devices/letters-industry">View on FDA website &rarr;</a></p>
 
 <table>
   <tr>
     <th class="fda">#</th>
-    <th class="fda">Device / Company</th>
-    <th class="fda">Class</th>
+    <th class="fda">Recipient / Subject</th>
+    <th class="fda">Type</th>
     <th class="fda">Date</th>
-    <th class="fda">Injuries / Deaths</th>
     <th class="fda">Link</th>
   </tr>
   <tr>
     <td>1</td>
-    <td>Insulet &mdash; Omnipod 5 ACE Insulin Pump Pods</td>
-    <td><span class="rt-class1">Class I</span></td>
-    <td>2026-Mar-12</td>
-    <td>476 injuries / 0 deaths</td>
-    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/insulin-pump-recall-insulet-removes-certain-omnipod-5-pods" target="_blank">Link</a></td>
+    <td>Medline Industries LP (NAMIC Division) &mdash; Angiographic Control Syringes CAPA Failures</td>
+    <td><span class="rt-badge rt-badge-recall">WARNING</span></td>
+    <td>2026-Mar-25</td>
+    <td><a class="rt-link" href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters/medline-industries-lp-723866-03252026" target="_blank">Link</a></td>
   </tr>
   <tr class="rt-summary-fda">
-    <td colspan="6">
-      <strong>Summary:</strong> Class I recall due to small tears in internal tubing causing insulin to leak inside the pod. Users may experience hyperglycemia without triggering an alarm, potentially leading to diabetic ketoacidosis (DKA). As of April 17, 2026: 476 serious injuries, no deaths. Customers advised to stop using affected lots.
+    <td colspan="5">
+      <strong>Summary:</strong> Warning letter (Ref: 723866) issued by CDRH&rsquo;s Barbara Marsden following a Dec 1&ndash;12, 2025 inspection at Medline&rsquo;s NY facility manufacturing NAMIC Angiographic Control Syringes. Key finding: CAPA ineffectiveness &mdash; the firm&rsquo;s own verification-of-effectiveness data showed complaints-per-million exceeding threshold for 3 consecutive quarters (Q1&ndash;Q3 2025) without commensurate action. 250+ complaints and 4 serious injuries linked to syringe adaptor unwinding. Firm eventually initiated removal (806 report filed March 13, 2026). Notable: first warning letter explicitly requiring QMSR-compliant remediation for pre-QMSR inspection findings (QMSR effective Feb 2, 2026).
     </td>
   </tr>
   <tr>
     <td>2</td>
-    <td>Boston Scientific &mdash; ACCOLADE Pacemakers &amp; CRT-Ps</td>
-    <td><span class="rt-class1">Class I</span></td>
-    <td>2026-May-08</td>
-    <td>2,557 injuries / 4 deaths</td>
-    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/pacemaker-correction-boston-scientific-issues-correction-accolade-pacemakers-and-crt-ps" target="_blank">Link</a></td>
+    <td>CDRH Data Integrity Notifications &mdash; Third-Party Testing Lab Data Rejection</td>
+    <td><span class="rt-badge rt-badge-alert">NOTICE</span></td>
+    <td>2026 (ongoing)</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/industry-medical-devices/notifications-data-integrity-medical-devices" target="_blank">Link</a></td>
   </tr>
   <tr class="rt-summary-fda">
-    <td colspan="6">
-      <strong>Summary:</strong> Software-related battery issue causes premature Safety Mode entry, limiting pacing. New Brady SMR6 update addresses the risk. Covers over 1 million pacemakers. As of March 18, 2026: 4 deaths and 2,557 serious injuries. Clinicians must apply software update during office visits.
+    <td colspan="5">
+      <strong>Summary:</strong> CDRH maintains and updates a public page cataloging data integrity concerns from third-party testing facilities. FDA determined that certain testing labs copied study results or submitted falsified/invalid data. All study data from flagged facilities are rejected by FDA until adequately remediated. Manufacturers relying on flagged labs must re-test with compliant facilities. This is a new compliance tool &mdash; device sponsors should cross-check their testing partners against this list regularly.
     </td>
   </tr>
   <tr>
     <td>3</td>
-    <td>Medline Industries &mdash; Namic Angiographic Rotating Adaptor Syringes</td>
-    <td><span class="rt-class1">Class I</span></td>
-    <td>2026-Mar</td>
-    <td>4 injuries / 0 deaths</td>
-    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/angiographic-syringe-recall-medline-industries-removes-namic-angiographic-rotating-adaptor-control" target="_blank">Link</a></td>
-  </tr>
-  <tr class="rt-summary-fda">
-    <td colspan="6">
-      <strong>Summary:</strong> Syringe rotating adaptor may unwind during use, causing loose connection or disconnection. Risks include biohazard exposure, blood loss, infection, and air embolism. 250 complaints between June 2023 and February 2026. FDA also issued warning letter to Medline.
-    </td>
-  </tr>
-  <tr>
-    <td>4</td>
-    <td>B. Braun Medical &mdash; Hemodialysis Bloodlines</td>
-    <td><span class="rt-early-alert">Early Alert</span></td>
-    <td>2026-Mar-25</td>
-    <td>0 injuries / 0 deaths</td>
-    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/early-alert-bloodline-set-hemodialysis-systems-issue-b-braun-medical-inc" target="_blank">Link</a></td>
-  </tr>
-  <tr class="rt-summary-fda">
-    <td colspan="6">
-      <strong>Summary:</strong> Tubing resin change caused small air bubbles to adhere to arterial bloodline interior, potentially accumulating into larger bubbles. If the dialysis machine&rsquo;s air detector triggers, treatment stops. Patients may experience moderate blood loss. FDA urged use of alternate dialysis equipment.
-    </td>
-  </tr>
-  <tr>
-    <td>5</td>
-    <td>Fresenius Kabi &mdash; Ivenix Large Volume Infusion Pump Software</td>
-    <td><span class="rt-class1">Class I</span></td>
-    <td>2026-Mar-04</td>
-    <td>2 injuries / 0 deaths</td>
-    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/infusion-pump-software-correction-fresenius-kabi-issues-correction-ivenix-large-volume-pump-software" target="_blank">Link</a></td>
-  </tr>
-  <tr class="rt-summary-fda">
-    <td colspan="6">
-      <strong>Summary:</strong> Two software issues: (1) inaccurate battery capacity reporting during extended battery use, causing unexpected shutdown; (2) entering a rate with two leading zeroes causes a fail-stop alarm, freezing the interface. Software update issued.
-    </td>
-  </tr>
-  <tr>
-    <td>6</td>
-    <td>Medtronic &mdash; DLP Left Heart Vent Catheters</td>
-    <td><span class="rt-class1">Class I</span></td>
-    <td>2026 (finalized)</td>
-    <td>3 injuries / 0 deaths</td>
-    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/cardiac-cannula-recall-medtronic-removes-dlp-left-heart-vent-catheter" target="_blank">Link</a></td>
-  </tr>
-  <tr class="rt-summary-fda">
-    <td colspan="6">
-      <strong>Summary:</strong> Catheters (models 12110, 12113, 12115) resist shape retention when bent, risking abrasion and perforation. Three recalls cover over 101,000 catheters. Medtronic requested quarantine and return of all unused devices.
-    </td>
-  </tr>
-  <tr>
-    <td>7</td>
-    <td>Johnson &amp; Johnson MedTech &mdash; Impella RP / RP Flex Heart Pumps</td>
-    <td><span class="rt-class1">Class I</span></td>
-    <td>2026-Mar</td>
-    <td>3 deaths (AIC-related)</td>
-    <td><a class="rt-link" href="https://cardiovascularbusiness.com/topics/clinical/interventional-cardiology/fda-confirms-more-class-i-recalls-johnson-johnson-heart-pumps-due-malfunction-risk" target="_blank">Link</a></td>
-  </tr>
-  <tr class="rt-summary-fda">
-    <td colspan="6">
-      <strong>Summary:</strong> Three new recalls for Impella RP, RP with SmartAssist, and RP Flex with SmartAssist. Malfunctioning differential pressure (dP) sensors may produce inaccurate readings. Related: earlier AIC recall (Dec 2025) linked to 3 patient deaths. Cybersecurity-related recalls also issued for AIC controllers.
-    </td>
-  </tr>
-  <tr>
-    <td>8</td>
-    <td>Erbe USA &mdash; Flexible Cryoprobes</td>
-    <td><span class="rt-class1">Class I</span></td>
+    <td>QMSR Transition &mdash; Post-Feb 2, 2026 Enforcement Bridging Expectations</td>
+    <td><span class="rt-badge rt-badge-alert">NOTICE</span></td>
     <td>2026-Feb/Mar</td>
-    <td>5 injuries / 0 deaths</td>
-    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/early-alert-flexible-cryoprobe-issue-erbe-usa" target="_blank">Link</a></td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/quality-and-compliance-medical-devices/center-devices-and-radiological-health-cdrh-compliance-programs" target="_blank">Link</a></td>
   </tr>
   <tr class="rt-summary-fda">
-    <td colspan="6">
-      <strong>Summary:</strong> Recall of 40,952 flexible cryoprobes. May rupture or burst during activation due to insufficient adhesive in manufacturing. Ruptures produce loud sounds potentially causing tinnitus, hearing loss, and burns. Used for palliative tissue destruction and foreign body removal.
-    </td>
-  </tr>
-  <tr>
-    <td>9</td>
-    <td>Conavi Medical &mdash; Novasight Hybrid Intravascular Catheters</td>
-    <td><span class="rt-class1">Class I</span></td>
-    <td>2026 (finalized)</td>
-    <td>0 injuries / 0 deaths</td>
-    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/diagnostic-intravascular-catheter-recall-conavi-removes-novasight-hybrid-catheters" target="_blank">Link</a></td>
-  </tr>
-  <tr class="rt-summary-fda">
-    <td colspan="6">
-      <strong>Summary:</strong> Combined IVUS + OCT imaging catheter sheath became detached during use and was left in a patient&rsquo;s body. Risks include coronary artery spasm, dissection, perforation, thrombosis, and embolism. Catheter was safely removed. Affected lots: 230902, 240202, 240302, 240402, 240502.
+    <td colspan="5">
+      <strong>Summary:</strong> Multiple CDRH warning letters (including IsoTis OrthoBiologics Feb 24, Longhorn Vaccines Feb 26, Medline Mar 25) now contain standardized language: &ldquo;Any corrective actions proposed or implemented must be pursuant to the QMSR requirements in effect as of February 2, 2026.&rdquo; This signals that even for inspections conducted under the old QS regulation (21 CFR 820), FDA expects all remediation plans to comply with the new QMSR framework (ISO 13485-aligned). Device manufacturers should update their QMS documentation accordingly.
     </td>
   </tr>
 </table>
 
-<!-- Press Announcements -->
+</div>
+<!-- END scan-block -->
+</div>
+<!-- ====== END SUB-TAB: Letters to Industry ====== -->
+
+<!-- ====== SUB-TAB: Press Announcements ====== -->
+<div id="st-press" class="rt-subtab-content">
+
+<div class="rt-scan-block">
+<span class="rt-scan-date fda">Scan Date: May 26, 2026 &mdash; Mar&ndash;May 2026</span>
+
 <h2>Press Announcements (Medical Device Related)</h2>
 <p><a href="https://www.fda.gov/news-events/fda-newsroom/press-announcements">View on FDA website &rarr;</a></p>
 
@@ -548,13 +515,157 @@
   </tr>
   <tr class="rt-summary-fda">
     <td colspan="4">
-      <strong>Summary:</strong> FDA launched Elsa 4.0, an upgraded internal AI tool available to all FDA staff (reviewers, investigators), with new capabilities including custom agentic AI, document generation, data analysis/visualization, voice-to-text, OCR, and web search. Simultaneously completed consolidation of 40+ disparate submission data systems into HALO (Harmonized AI &amp; Lifecycle Operations for Data). HALO unifies application and submission portals across all FDA centers. Built within FedRAMP High secure Google Cloud &mdash; does not train on industry submissions. Commissioner Makary: &ldquo;Removing tedious burdens for staff enables them to focus more on science.&rdquo; Directly impacts device manufacturers&rsquo; submission workflows and could accelerate review timelines.
+      <strong>Summary:</strong> FDA launched Elsa 4.0 with agentic AI, document generation, data visualization, voice-to-text, and OCR. Consolidated 40+ data systems into HALO (Harmonized AI &amp; Lifecycle Operations for Data). Built within FedRAMP High secure Google Cloud &mdash; does not train on industry submissions. Directly impacts device manufacturers&rsquo; submission workflows and could accelerate review timelines.
     </td>
   </tr>
 </table>
 
 </div>
-<!-- ==================== END SCAN: 2026-05-25 ==================== -->
+<!-- END scan-block -->
+</div>
+<!-- ====== END SUB-TAB: Press Announcements ====== -->
+
+<!-- ====== SUB-TAB: Recalls & Early Alerts (BOTTOM) ====== -->
+<div id="st-recalls" class="rt-subtab-content">
+
+<div class="rt-scan-block">
+<span class="rt-scan-date fda">Scan Date: May 26, 2026 &mdash; Mar&ndash;May 2026</span>
+
+<h2>Medical Device Recalls &amp; Early Alerts</h2>
+<p><a href="https://www.fda.gov/medical-devices/medical-device-safety/medical-device-recalls-and-early-alerts">View on FDA website &rarr;</a></p>
+
+<table>
+  <tr>
+    <th class="fda">#</th>
+    <th class="fda">Device / Company</th>
+    <th class="fda">Class</th>
+    <th class="fda">Date</th>
+    <th class="fda">Injuries / Deaths</th>
+    <th class="fda">Link</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Insulet &mdash; Omnipod 5 ACE Insulin Pump Pods</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026-Mar-12</td>
+    <td>476 injuries / 0 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/insulin-pump-recall-insulet-removes-certain-omnipod-5-pods" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Class I recall due to small tears in internal tubing causing insulin to leak inside the pod. Users may experience hyperglycemia without triggering an alarm, potentially leading to diabetic ketoacidosis (DKA). As of April 17, 2026: 476 serious injuries, no deaths.
+    </td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Boston Scientific &mdash; ACCOLADE Pacemakers &amp; CRT-Ps</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026-May-08</td>
+    <td>2,557 injuries / 4 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/pacemaker-correction-boston-scientific-issues-correction-accolade-pacemakers-and-crt-ps" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Software-related battery issue causes premature Safety Mode entry. Brady SMR6 update addresses the risk. Covers over 1 million pacemakers. 4 deaths and 2,557 serious injuries.
+    </td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Medline Industries &mdash; Namic Angiographic Syringes</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026-Mar</td>
+    <td>4 injuries / 0 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/angiographic-syringe-recall-medline-industries-removes-namic-angiographic-rotating-adaptor-control" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Syringe rotating adaptor may unwind, causing disconnection. Risks: biohazard exposure, blood loss, air embolism. 250 complaints, 4 serious injuries. FDA also issued warning letter.
+    </td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>B. Braun Medical &mdash; Hemodialysis Bloodlines</td>
+    <td><span class="rt-early-alert">Early Alert</span></td>
+    <td>2026-Mar-25</td>
+    <td>0 injuries / 0 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/early-alert-bloodline-set-hemodialysis-systems-issue-b-braun-medical-inc" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Tubing resin change caused air bubbles to adhere to arterial bloodline. FDA urged alternate dialysis equipment. No injuries reported.
+    </td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Fresenius Kabi &mdash; Ivenix Infusion Pump Software</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026-Mar-04</td>
+    <td>2 injuries / 0 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/infusion-pump-software-correction-fresenius-kabi-issues-correction-ivenix-large-volume-pump-software" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Battery display inaccuracy and fail-stop alarm from double-zero rate entry. Software update issued. 2 serious injuries.
+    </td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Medtronic &mdash; DLP Left Heart Vent Catheters</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026 (finalized)</td>
+    <td>3 injuries / 0 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/cardiac-cannula-recall-medtronic-removes-dlp-left-heart-vent-catheter" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Catheters resist shape retention when bent, risking perforation. 101,000+ units recalled. Quarantine and return requested.
+    </td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>J&amp;J MedTech &mdash; Impella RP / RP Flex Heart Pumps</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026-Mar</td>
+    <td>3 deaths (AIC-related)</td>
+    <td><a class="rt-link" href="https://cardiovascularbusiness.com/topics/clinical/interventional-cardiology/fda-confirms-more-class-i-recalls-johnson-johnson-heart-pumps-due-malfunction-risk" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> Malfunctioning dP sensors produce inaccurate readings. Related AIC recall (Dec 2025) linked to 3 deaths. Cybersecurity recalls also issued.
+    </td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>Erbe USA &mdash; Flexible Cryoprobes</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026-Feb/Mar</td>
+    <td>5 injuries / 0 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/early-alert-flexible-cryoprobe-issue-erbe-usa" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> 40,952 cryoprobes may rupture during activation. Risks: tinnitus, hearing loss, burns. 5 serious injuries.
+    </td>
+  </tr>
+  <tr>
+    <td>9</td>
+    <td>Conavi Medical &mdash; Novasight Hybrid Catheters</td>
+    <td><span class="rt-class1">Class I</span></td>
+    <td>2026 (finalized)</td>
+    <td>0 injuries / 0 deaths</td>
+    <td><a class="rt-link" href="https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/diagnostic-intravascular-catheter-recall-conavi-removes-novasight-hybrid-catheters" target="_blank">Link</a></td>
+  </tr>
+  <tr class="rt-summary-fda">
+    <td colspan="6">
+      <strong>Summary:</strong> IVUS + OCT catheter sheath detached during use. Risks: coronary spasm, dissection, thrombosis. Catheter safely removed.
+    </td>
+  </tr>
+</table>
+
+</div>
+<!-- END scan-block -->
+</div>
+<!-- ====== END SUB-TAB: Recalls ====== -->
 
 </div>
 <!-- ==================== END TAB: USFDA ==================== -->
@@ -564,7 +675,7 @@
 <!-- FOOTER -->
 <div class="rt-footer">
   <p>Automated report &mdash; Medical Device Regulatory Tracker | NexorTest Technologies<br>
-  Sources: <a href="https://cdsco.gov.in/opencms/opencms/en/Medical-Device-Diagnostics/Medical-Device-Diagnostics/">CDSCO Medical Devices</a> &middot; <a href="https://cdsco.gov.in/opencms/opencms/en/Medical-Device-Diagnostics/InVitro-Diagnostics/">CDSCO IVD</a> &middot; <a href="https://www.fda.gov/medical-devices/device-advice-comprehensive-regulatory-assistance/guidance-documents-medical-devices-and-radiation-emitting-products">USFDA Guidance</a> &middot; <a href="https://www.fda.gov/medical-devices/medical-devices-news-and-events/cdrh-new-news-and-updates">CDRH News</a> &middot; <a href="https://www.fda.gov/medical-devices/medical-device-safety/medical-device-recalls-and-early-alerts">FDA Recalls</a> &middot; <a href="https://www.fda.gov/news-events/fda-newsroom/press-announcements">FDA Press</a><br>
+  Sources: <a href="https://cdsco.gov.in/opencms/opencms/en/Medical-Device-Diagnostics/Medical-Device-Diagnostics/">CDSCO Medical Devices</a> &middot; <a href="https://cdsco.gov.in/opencms/opencms/en/Medical-Device-Diagnostics/InVitro-Diagnostics/">CDSCO IVD</a> &middot; <a href="https://www.fda.gov/medical-devices/device-advice-comprehensive-regulatory-assistance/guidance-documents-medical-devices-and-radiation-emitting-products">USFDA Guidance</a> &middot; <a href="https://www.fda.gov/medical-devices/medical-devices-news-and-events/cdrh-new-news-and-updates">CDRH News</a> &middot; <a href="https://www.fda.gov/medical-devices/industry-medical-devices/letters-industry">Letters to Industry</a> &middot; <a href="https://www.fda.gov/news-events/fda-newsroom/press-announcements">FDA Press</a> &middot; <a href="https://www.fda.gov/medical-devices/medical-device-safety/medical-device-recalls-and-early-alerts">FDA Recalls</a><br>
   Updated weekly. New scan results are added above &mdash; older entries are preserved below.</p>
 </div>
 
@@ -579,6 +690,20 @@ function showRegTab(tabId) {
   for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
   document.getElementById(tabId).classList.add('active');
   var allBtns = document.querySelectorAll('.reg-tracker .rt-tab-btn');
+  for (var j = 0; j < allBtns.length; j++) {
+    if (allBtns[j].getAttribute('onclick').indexOf(tabId) !== -1) {
+      allBtns[j].classList.add('active');
+    }
+  }
+}
+
+function showSubTab(tabId) {
+  var tabs = document.querySelectorAll('.reg-tracker .rt-subtab-content');
+  var btns = document.querySelectorAll('.reg-tracker .rt-subtab-btn');
+  for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove('active'); }
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
+  document.getElementById(tabId).classList.add('active');
+  var allBtns = document.querySelectorAll('.reg-tracker .rt-subtab-btn');
   for (var j = 0; j < allBtns.length; j++) {
     if (allBtns[j].getAttribute('onclick').indexOf(tabId) !== -1) {
       allBtns[j].classList.add('active');
